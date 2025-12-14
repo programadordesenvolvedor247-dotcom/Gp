@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Localização</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<h2>Localização atual</h2>
+<button onclick="getLocation()">Obter localização</button>
+<p id="status"></p>
+
+<script>
+function getLocation() {
+  if (!navigator.geolocation) {
+    document.getElementById("status").innerText =
+      "Geolocalização não suportada.";
+    return;
+  }
+
+  navigator.geolocation.getCurrentPosition(
+    (pos) => {
+      document.getElementById("status").innerHTML =
+        "Latitude: " + pos.coords.latitude +
+        "<br>Longitude: " + pos.coords.longitude;
+    },
+    (err) => {
+      let msg = "";
+      switch(err.code) {
+        case 1: msg = "Permissão NEGADA."; break;
+        case 2: msg = "Localização indisponível."; break;
+        case 3: msg = "Tempo excedido."; break;
+        default: msg = "Erro desconhecido.";
+      }
+      document.getElementById("status").innerText = msg;
+    },
+    { enableHighAccuracy: true, timeout: 15000 }
+  );
+}
+</script>
+
+</body>
+</html>
